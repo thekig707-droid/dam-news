@@ -2,6 +2,7 @@ import { client } from '@/lib/sanity.client'
 import { homeArticlesQuery } from '@/lib/queries'
 import { urlFor } from '@/lib/urlFor'
 import Link from 'next/link'
+import AdBanner from './components/AdBanner'
 
 export const revalidate = 60; 
 
@@ -10,6 +11,10 @@ export default async function Home() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen">
+      
+      {/* Ad Banner */}
+      <AdBanner />
+
       {/* BBC/TOI Style Header */}
       <header className="border-b-4 border-black pb-6 mb-10 text-center">
         <h1 className="text-7xl md:text-8xl font-serif font-black tracking-tighter text-black uppercase">
@@ -96,6 +101,6 @@ export default async function Home() {
         </div>
 
       </div>
- </main>
+    </main>
   )
 }
