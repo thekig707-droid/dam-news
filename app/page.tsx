@@ -3,6 +3,7 @@ import { homeArticlesQuery } from '@/lib/queries'
 import { urlFor } from '@/lib/urlFor'
 import Link from 'next/link'
 import AdBanner from './components/AdBanner'
+import React from 'react' // 🟢 Iski zaroorat padegi fragment ke liye
 
 export const revalidate = 60; 
 
@@ -12,7 +13,7 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen">
       
-      {/* 1. MAIN LOGO HEADER (AB YEH SABSE UPAR RAHEGA) */}
+      {/* MAIN LOGO HEADER */}
       <header className="border-b-4 border-black pb-6 mb-8 text-center mt-4">
         <h1 className="text-7xl md:text-8xl font-serif font-black tracking-tighter text-black uppercase">
           <span className="text-red-700">D</span>AM.
@@ -26,12 +27,7 @@ export default async function Home() {
         </div>
       </header>
 
-      {/* 2. AD BANNER (LOGO KE NEECHE SHIFT HO GAYA) */}
-      <div className="mb-10 flex justify-center">
-        <AdBanner />
-      </div>
-
-      {/* 3. LATEST NEWS SECTION */}
+      {/* LATEST NEWS SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Left Side: Latest Briefs */}
@@ -58,42 +54,54 @@ export default async function Home() {
         {/* Right Side: Big Image News Cards */}
         <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
           {articles && articles.length > 0 ? (
-            articles.map((article: any) => (
-              <article key={article._id} className="group cursor-pointer">
-                <Link href={`/article/${article.slug.current}`}>
-                  {/* Photo Section */}
-                  {article.mainImage ? (
-                    <div className="relative w-full h-56 mb-4 overflow-hidden rounded-sm bg-gray-100">
-                      <img 
-                        src={urlFor(article.mainImage).url()} 
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+            articles.map((article: any, index: number) => (
+              <React.Fragment key={article._id}>
+                
+                {/* News Card */}
+                <article className="group cursor-pointer">
+                  <Link href={`/article/${article.slug.current}`}>
+                    {/* Photo Section */}
+                    {article.mainImage ? (
+                      <div className="relative w-full h-56 mb-4 overflow-hidden rounded-sm bg-gray-100">
+                        <img 
+                          src={urlFor(article.mainImage).url()} 
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full h-56 mb-4 bg-gray-200 flex items-center justify-center rounded-sm">
+                        <span className="text-gray-400 font-serif">No Image</span>
+                      </div>
+                    )}
+                    
+                    {/* Text Section */}
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="bg-red-700 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
+                        Breaking
+                      </span>
+                      <span className="text-xs text-gray-500 font-semibold uppercase">
+                        {article.authorName}
+                      </span>
                     </div>
-                  ) : (
-                    <div className="w-full h-56 mb-4 bg-gray-200 flex items-center justify-center rounded-sm">
-                      <span className="text-gray-400 font-serif">No Image</span>
-                    </div>
-                  )}
-                  
-                  {/* Text Section */}
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="bg-red-700 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
-                      Breaking
-                    </span>
-                    <span className="text-xs text-gray-500 font-semibold uppercase">
-                      {article.authorName}
-                    </span>
+                    
+                    <h2 className="text-2xl font-serif font-extrabold text-gray-900 leading-tight group-hover:text-red-700 transition-colors">
+                      {article.title}
+                    </h2>
+                    <p className="text-gray-600 mt-3 line-clamp-3 font-serif text-md">
+                      {article.description}
+                    </p>
+                  </Link>
+                </article>
+
+                {/* 🔴 AD BANNER LOGIC: Har 2 news ke baad Ad aayega */}
+                {(index + 1) % 2 === 0 && index !== articles.length - 1 && (
+                  <div className="col-span-1 sm:col-span-2 my-4 flex justify-center border-y-2 border-gray-100 py-6 bg-gray-50 w-full">
+                    <AdBanner />
                   </div>
-                  
-                  <h2 className="text-2xl font-serif font-extrabold text-gray-900 leading-tight group-hover:text-red-700 transition-colors">
-                    {article.title}
-                  </h2>
-                  <p className="text-gray-600 mt-3 line-clamp-3 font-serif text-md">
-                    {article.description}
-                  </p>
-                </Link>
-              </article>
+                )}
+                
+              </React.Fragment>
             ))
           ) : (
             <div className="col-span-2 py-12 text-center">
