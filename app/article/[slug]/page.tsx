@@ -3,11 +3,14 @@ import { urlFor } from "../../../lib/urlFor";
 import { PortableText } from "@portabletext/react";
 import AdBanner from "../../components/AdBanner";
 
-// Sanity se article ka data lane ka function
+// Sanity se article ka data lane ka function - BULLETPROOF FIX
 const getArticle = async (slug: string) => {
-  // Yahan ab 'article' type set ho gaya hai jo aapke database se match karega
-  const query = `*[_type == "article" && slug.current == $slug][0]`;
-  const article = await client.fetch(query, { slug });
+  // Yahan humne $slug parameter ka chakkar khatam karke sidha variable "${slug}" inject kar diya hai
+  const query = `*[_type == "article" && slug.current == "${slug}"][0]{
+    ...,
+    "authorName": author->name
+  }`;
+  const article = await client.fetch(query);
   return article;
 };
 
