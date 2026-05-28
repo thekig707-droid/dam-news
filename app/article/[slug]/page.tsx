@@ -1,11 +1,12 @@
 import { client } from "../../../lib/sanity.client";
 import { urlFor } from "../../../lib/urlFor";
 import { PortableText } from "@portabletext/react";
-import AdBanner from "../../components/AdBanner"; // AdBanner ka sahi path
+import AdBanner from "../../components/AdBanner";
 
 // Sanity se article ka data lane ka function
 const getArticle = async (slug: string) => {
-  const query = `*[_type == "post" && slug.current == $slug][0]`;
+  // Yahan ab 'article' type set ho gaya hai jo aapke database se match karega
+  const query = `*[_type == "article" && slug.current == $slug][0]`;
   const article = await client.fetch(query, { slug });
   return article;
 };
@@ -48,7 +49,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           </div>
         )}
 
-        {/* 🔴 PEHLA AD BANNER (Cover Image ke theek neeche) */}
+        {/* 🔴 PEHLA AD BANNER */}
         <div className="my-10 flex justify-center bg-gray-50 py-4 border-y border-gray-200">
           <AdBanner />
         </div>
@@ -62,7 +63,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           )}
         </div>
         
-        {/* 🔴 DUSRA AD BANNER (Article khatam hone par) */}
+        {/* 🔴 DUSRA AD BANNER */}
         <div className="mt-16 mb-8 flex justify-center bg-gray-50 py-4 border-t-4 border-black">
           <AdBanner />
         </div>
