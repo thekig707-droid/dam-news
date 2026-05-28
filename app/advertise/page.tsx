@@ -75,6 +75,6 @@ export default function Advertise() {
         </div>
 
       </div>
-    </div>
+    </div> 
   );
 }
