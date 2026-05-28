@@ -12,8 +12,8 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen">
       
-      {/* BBC/TOI Style Header (SABSE UPAR) */}
-      <header className="border-b-4 border-black pb-6 mb-8 text-center">
+      {/* 1. MAIN LOGO HEADER (AB YEH SABSE UPAR RAHEGA) */}
+      <header className="border-b-4 border-black pb-6 mb-8 text-center mt-4">
         <h1 className="text-7xl md:text-8xl font-serif font-black tracking-tighter text-black uppercase">
           <span className="text-red-700">D</span>AM.
         </h1>
@@ -26,15 +26,15 @@ export default async function Home() {
         </div>
       </header>
 
-      {/* Ad Banner (HEADER KE NEECHE, ARTICLES KE UPAR) */}
-      <div className="mb-10">
+      {/* 2. AD BANNER (LOGO KE NEECHE SHIFT HO GAYA) */}
+      <div className="mb-10 flex justify-center">
         <AdBanner />
       </div>
 
-      {/* Main News Grid */}
+      {/* 3. LATEST NEWS SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        {/* Left Side: Latest News List */}
+        {/* Left Side: Latest Briefs */}
         <div className="md:col-span-1 border-r border-gray-200 pr-6 hidden md:block">
           <h2 className="text-xl font-bold font-sans border-b-2 border-red-700 pb-2 mb-4 uppercase tracking-wide">
             Latest Briefs
