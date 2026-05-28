@@ -31,15 +31,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Links Grid */}
+        {/* Links Grid (🟢 YAHAN LINKS UPDATE KIYE HAIN) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-700 mb-8 font-medium">
-          <Link href="#" className="hover:underline">Terms of Use</Link>
+          <Link href="/terms" className="hover:underline">Terms of Use</Link>
           <Link href="/about" className="hover:underline">About DAM News</Link>
-          <Link href="#" className="hover:underline">Privacy Policy</Link>
-          <Link href="#" className="hover:underline">Cookies</Link>
+          <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+          <Link href="/cookies" className="hover:underline">Cookies</Link>
           <Link href="mailto:deepumishra6836@gmail.com" className="hover:underline">Contact DAM</Link>
-          <Link href="#" className="hover:underline text-red-700 font-bold">Advertise with us</Link>
-          <Link href="#" className="hover:underline">DAM Help & FAQs</Link>
+          <Link href="/advertise" className="hover:underline text-red-700 font-bold">Advertise with us</Link>
+          <Link href="/faq" className="hover:underline">DAM Help & FAQs</Link>
         </div>
 
         {/* Bottom Area */}
