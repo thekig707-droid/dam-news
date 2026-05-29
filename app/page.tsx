@@ -78,12 +78,13 @@ export default async function Home() {
                       </div>
                     )}
                     
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="bg-red-700 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
-                        Breaking
+                    {/* 🔴 YAHAN HUMNE UN SASTE TAGS KO HATA KAR PREMIUM EDITORIAL TAG LAGA DIYA HAI */}
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="text-[#cc2027] text-[10px] md:text-xs font-black uppercase tracking-widest border-l-[3px] border-[#cc2027] pl-2">
+                        {article.categories?.[0]?.title || "Top Story"}
                       </span>
-                      <span className="text-xs text-gray-500 font-semibold uppercase">
-                        {article.authorName}
+                      <span className="text-[10px] md:text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                        • {article.authorName || "DAM News Desk"}
                       </span>
                     </div>
                     
