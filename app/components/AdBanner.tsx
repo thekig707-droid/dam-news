@@ -1,6 +1,15 @@
 "use client";
 
 export default function AdBanner() {
+  // 🔴 MASTER SWITCH: Ad chalane ke liye isko 'true' kar dena. Abhi 'false' hai taaki chhup jaye.
+  const isAdActive = false;
+
+  // Agar switch OFF hai, toh yeh function kuch bhi return nahi karega (Dabba gayab!)
+  if (!isAdActive) {
+    return null;
+  }
+
+  // Agar switch ON hai, toh aapka purana design dikhega
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8 text-center">
       {/* BBC style clean gray-bordered Ad Container */}
