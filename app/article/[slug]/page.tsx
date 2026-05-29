@@ -14,28 +14,23 @@ const getArticle = async (slug: string) => {
   return article;
 };
 
+// 🔥 MASTER FORMULA: Yeh Shorts aur Normal dono YouTube links ko pakad lega
+const getYouTubeId = (url: string) => {
+  if (!url) return null;
+  const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+};
+
+// Agar by-chance body ke andar video daali toh uske liye backup
 const RichTextComponents = {
   types: {
     youtube: ({ value }: any) => {
-      const { url } = value;
-      if (!url) return null;
-      
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-      const match = url?.match(regExp);
-      const videoId = match && match[2].length === 11 ? match[2] : null;
-
-      if (!videoId) return <p className="text-red-500 italic text-center">Invalid YouTube URL</p>;
-
+      const videoId = getYouTubeId(value?.url);
+      if (!videoId) return null;
       return (
         <div className="my-10 flex justify-center w-full">
-          <iframe
-            className="w-full aspect-video rounded-sm shadow-lg md:w-[85%]"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <iframe className="w-full aspect-video rounded-sm shadow-lg md:w-[85%]" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameBorder="0" allowFullScreen />
         </div>
       );
     }
@@ -56,9 +51,14 @@ export default async function ArticlePage(props: any) {
     );
   }
 
+  // 🔴 YAHAN HUM SANITY WALE 'videoUrl' SE ID NIKAAL RAHE HAIN
+  const topVideoId = article.videoUrl ? getYouTubeId(article.videoUrl) : null;
+
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen">
       <article>
+        
+        {/* Headline */}
         <header className="mb-8 text-center border-b border-gray-200 pb-8">
           <h1 className="text-4xl md:text-6xl font-serif font-black mb-6 leading-tight text-black">
             {article.title}
@@ -70,16 +70,30 @@ export default async function ArticlePage(props: any) {
           </div>
         </header>
 
-        {article.mainImage && (
+        {/* 🔴 MAGIC BOX: Agar Video URL hai toh Video chalegi, nahi toh Image dikhegi */}
+        {topVideoId ? (
+          <div className="w-full mb-8 bg-black rounded-sm overflow-hidden shadow-lg flex justify-center">
+            <iframe
+              className="w-full aspect-video md:w-[90%]"
+              src={`https://www.youtube.com/embed/${topVideoId}?autoplay=1&mute=1`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : article.mainImage ? (
           <div className="w-full h-auto mb-8 bg-gray-100 rounded-sm overflow-hidden shadow-lg">
             <img src={urlFor(article.mainImage).url()} alt={article.title} className="w-full max-h-[550px] object-cover" />
           </div>
-        )}
+        ) : null}
 
+        {/* Ad Banner */}
         <div className="my-10 flex justify-center bg-gray-50 py-4 border-y border-gray-200">
           <AdBanner />
         </div>
 
+        {/* Article Body */}
         <div className="prose prose-lg md:prose-xl max-w-none font-serif text-gray-800 leading-relaxed mb-12">
           {article.body ? (
             <PortableText value={article.body} components={RichTextComponents} />
@@ -88,6 +102,7 @@ export default async function ArticlePage(props: any) {
           )}
         </div>
         
+        {/* Ad Banner */}
         <div className="mt-16 mb-8 flex justify-center bg-gray-50 py-4 border-t-4 border-black">
           <AdBanner />
         </div>
