@@ -13,17 +13,22 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen">
       
-      {/* MAIN LOGO HEADER */}
+      {/* MAIN LOGO HEADER - UPDATED TO DAM NEWS */}
       <header className="border-b-4 border-black pb-6 mb-8 text-center mt-4">
-        <h1 className="text-7xl md:text-8xl font-serif font-black tracking-tighter text-black uppercase">
-          <span className="text-red-700">D</span>AM.
-        </h1>
-        <div className="flex items-center justify-center mt-2 space-x-4">
-          <div className="h-px bg-gray-300 w-16"></div>
-          <p className="text-gray-600 text-sm font-bold uppercase tracking-widest font-sans">
+        <div className="flex justify-center items-baseline">
+          <h1 className="text-7xl md:text-[8rem] font-black tracking-tighter text-black uppercase leading-none m-0">
+            DAM
+          </h1>
+          <span className="text-3xl md:text-5xl font-bold text-[#cc2027] ml-2 tracking-tight uppercase">
+            NEWS
+          </span>
+        </div>
+        <div className="flex items-center justify-center mt-4 space-x-4">
+          <div className="h-px bg-gray-300 w-16 md:w-32"></div>
+          <p className="text-gray-600 text-xs md:text-sm font-bold uppercase tracking-[0.2em] font-sans">
             Global Reports • Authentic News
           </p>
-          <div className="h-px bg-gray-300 w-16"></div>
+          <div className="h-px bg-gray-300 w-16 md:w-32"></div>
         </div>
       </header>
 
