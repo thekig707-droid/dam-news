@@ -3,9 +3,10 @@ import { urlFor } from "../../../lib/urlFor";
 import { PortableText } from "@portabletext/react";
 import AdBanner from "../../components/AdBanner";
 
-// Sanity se article ka data lane ka function - BULLETPROOF FIX
+// 🔥 Yeh line purane cache ko hamesha ke liye khatam kar degi
+export const revalidate = 0; 
+
 const getArticle = async (slug: string) => {
-  // Yahan humne $slug parameter ka chakkar khatam karke sidha variable "${slug}" inject kar diya hai
   const query = `*[_type == "article" && slug.current == "${slug}"][0]{
     ...,
     "authorName": author->name
@@ -14,13 +15,20 @@ const getArticle = async (slug: string) => {
   return article;
 };
 
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = await getArticle(params.slug);
+// 🔥 Yahan humne props ko change kiya hai taaki 'Locked Box' ko khol sakein
+export default async function ArticlePage(props: any) {
+  
+  // Next.js ka naya rule: params ko await karna padta hai
+  const params = await props.params;
+  const slug = params?.slug;
+
+  const article = await getArticle(slug);
 
   if (!article) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold font-serif text-gray-500">News Article Not Found</h1>
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold font-serif text-gray-500 mb-4">News Article Not Found</h1>
+        <p className="text-gray-400">Error check: Database mein '{slug}' nahi mila</p>
       </div>
     );
   }
