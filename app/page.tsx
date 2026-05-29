@@ -1,121 +1,111 @@
-import { client } from '@/lib/sanity.client'
-import { homeArticlesQuery } from '@/lib/queries'
-import { urlFor } from '@/lib/urlFor'
-import Link from 'next/link'
-import AdBanner from './components/AdBanner'
-import React from 'react' // 🟢 Iski zaroorat padegi fragment ke liye
+import { client } from "../../../lib/sanity.client";
+import { urlFor } from "../../../lib/urlFor";
+import { PortableText } from "@portabletext/react";
+import AdBanner from "../../components/AdBanner";
 
-export const revalidate = 60; 
+export const revalidate = 0; 
 
-export default async function Home() {
-  const articles = await client.fetch(homeArticlesQuery)
+const getArticle = async (slug: string) => {
+  const query = `*[_type == "article" && slug.current == "${slug}"][0]{
+    ...,
+    "authorName": author->name
+  }`;
+  const article = await client.fetch(query);
+  return article;
+};
+
+// 🔴 YEH HAI WOH YOUTUBE TRANSLATOR JO VIDEO KO PLAY KAREGA
+const RichTextComponents = {
+  types: {
+    youtube: ({ value }: any) => {
+      const { url } = value;
+      if (!url) return null;
+      
+      // YouTube link se Video ID nikalne ka formula
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url?.match(regExp);
+      const videoId = match && match[2].length === 11 ? match[2] : null;
+
+      if (!videoId) return <p className="text-red-500 italic text-center">Invalid YouTube URL</p>;
+
+      return (
+        <div className="my-10 flex justify-center w-full">
+          <iframe
+            className="w-full aspect-video rounded-sm shadow-lg md:w-[85%]"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      );
+    }
+  }
+};
+
+export default async function ArticlePage(props: any) {
+  const params = await props.params;
+  const slug = params?.slug;
+
+  const article = await getArticle(slug);
+
+  if (!article) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h1 className="text-3xl font-bold font-serif text-gray-500 mb-4">News Article Not Found</h1>
+        <p className="text-gray-400">Error check: Database mein '{slug}' nahi mila</p>
+      </div>
+    );
+  }
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen">
-      
-      {/* MAIN LOGO HEADER - UPDATED TO DAM NEWS */}
-      <header className="border-b-4 border-black pb-6 mb-8 text-center mt-4">
-        <div className="flex justify-center items-baseline">
-          <h1 className="text-7xl md:text-[8rem] font-black tracking-tighter text-black uppercase leading-none m-0">
-            DAM
-          </h1>
-          <span className="text-3xl md:text-5xl font-bold text-[#cc2027] ml-2 tracking-tight uppercase">
-            NEWS
-          </span>
-        </div>
-        <div className="flex items-center justify-center mt-4 space-x-4">
-          <div className="h-px bg-gray-300 w-16 md:w-32"></div>
-          <p className="text-gray-600 text-xs md:text-sm font-bold uppercase tracking-[0.2em] font-sans">
-            Global Reports • Authentic News
-          </p>
-          <div className="h-px bg-gray-300 w-16 md:w-32"></div>
-        </div>
-      </header>
-
-      {/* LATEST NEWS SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen">
+      <article>
         
-        {/* Left Side: Latest Briefs */}
-        <div className="md:col-span-1 border-r border-gray-200 pr-6 hidden md:block">
-          <h2 className="text-xl font-bold font-sans border-b-2 border-red-700 pb-2 mb-4 uppercase tracking-wide">
-            Latest Briefs
-          </h2>
-          <div className="space-y-6">
-            {articles?.map((article: any) => (
-              <div key={article._id + "sidebar"} className="border-b border-gray-100 pb-4">
-                <Link href={`/article/${article.slug.current}`}>
-                  <h3 className="font-serif font-bold text-lg leading-snug hover:text-red-700 transition-colors">
-                    {article.title}
-                  </h3>
-                </Link>
-                <p className="text-xs text-gray-500 mt-2 font-sans font-medium">
-                  {new Date(article.datePublished).toLocaleDateString('en-IN', { month: 'long', day: 'numeric' })}
-                </p>
-              </div>
-            ))}
+        {/* Headline & Meta Data */}
+        <header className="mb-8 text-center border-b border-gray-200 pb-8">
+          <h1 className="text-4xl md:text-6xl font-serif font-black mb-6 leading-tight text-black hover:text-red-700 transition-colors">
+            {article.title}
+          </h1>
+          <div className="flex items-center justify-center space-x-4 text-gray-500 font-sans text-xs uppercase tracking-widest font-bold">
+            <span className="bg-red-700 text-white px-3 py-1">DAM Exclusive</span>
+            <span>•</span>
+            <span>By {article.authorName || "DAM News Desk"}</span>
           </div>
+        </header>
+
+        {/* Cover Image */}
+        {article.mainImage && (
+          <div className="w-full h-auto mb-8 bg-gray-100 rounded-sm overflow-hidden shadow-lg">
+            <img
+              src={urlFor(article.mainImage).url()}
+              alt={article.title}
+              className="w-full max-h-[550px] object-cover"
+            />
+          </div>
+        )}
+
+        {/* 🔴 PEHLA AD BANNER */}
+        <div className="my-10 flex justify-center bg-gray-50 py-4 border-y border-gray-200">
+          <AdBanner />
         </div>
 
-        {/* Right Side: Big Image News Cards */}
-        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {articles && articles.length > 0 ? (
-            articles.map((article: any, index: number) => (
-              <React.Fragment key={article._id}>
-                
-                {/* News Card */}
-                <article className="group cursor-pointer">
-                  <Link href={`/article/${article.slug.current}`}>
-                    {/* Photo Section */}
-                    {article.mainImage ? (
-                      <div className="relative w-full h-56 mb-4 overflow-hidden rounded-sm bg-gray-100">
-                        <img 
-                          src={urlFor(article.mainImage).url()} 
-                          alt={article.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full h-56 mb-4 bg-gray-200 flex items-center justify-center rounded-sm">
-                        <span className="text-gray-400 font-serif">No Image</span>
-                      </div>
-                    )}
-                    
-                    {/* Text Section */}
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="bg-red-700 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
-                        Breaking
-                      </span>
-                      <span className="text-xs text-gray-500 font-semibold uppercase">
-                        {article.authorName}
-                      </span>
-                    </div>
-                    
-                    <h2 className="text-2xl font-serif font-extrabold text-gray-900 leading-tight group-hover:text-red-700 transition-colors">
-                      {article.title}
-                    </h2>
-                    <p className="text-gray-600 mt-3 line-clamp-3 font-serif text-md">
-                      {article.description}
-                    </p>
-                  </Link>
-                </article>
-
-                {/* 🔴 AD BANNER LOGIC: Har 2 news ke baad Ad aayega */}
-                {(index + 1) % 2 === 0 && index !== articles.length - 1 && (
-                  <div className="col-span-1 sm:col-span-2 my-4 flex justify-center border-y-2 border-gray-100 py-6 bg-gray-50 w-full">
-                    <AdBanner />
-                  </div>
-                )}
-                
-              </React.Fragment>
-            ))
+        {/* Article Body / Content (YAHAN COMPONENTS PASS KIYE HAIN) */}
+        <div className="prose prose-lg md:prose-xl max-w-none font-serif text-gray-800 leading-relaxed mb-12">
+          {article.body ? (
+            <PortableText value={article.body} components={RichTextComponents} />
           ) : (
-            <div className="col-span-2 py-12 text-center">
-              <p className="text-gray-500 font-serif text-lg">Waiting for the first breaking news...</p>
-            </div>
+            <p className="text-center text-gray-500 italic">Content is being updated...</p>
           )}
         </div>
+        
+        {/* 🔴 DUSRA AD BANNER */}
+        <div className="mt-16 mb-8 flex justify-center bg-gray-50 py-4 border-t-4 border-black">
+          <AdBanner />
+        </div>
 
-      </div>
+      </article>
     </main>
-  )
+  );
 }
