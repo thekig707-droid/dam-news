@@ -2,9 +2,10 @@ import "./globals.css"; // YEH LINE DESIGN KE LIYE SABSE ZAROORI HAI
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+// Yahan humne Google ke liye naya SEO code daal diya hai 👇
 export const metadata = {
-  title: "DAM News | Global Reports & Authentic News",
-  description: "A premium journalism platform by Akshay Mishra",
+  title: "DAM News - India's Latest News & Updates",
+  description: "DAM News par padhiye desh aur duniya ki sabse taaza khabrein. Sports, tech aur daily updates ke liye abhi visit kijiye.",
 };
 
 export default function RootLayout({
