@@ -1,7 +1,7 @@
-// 🔴 YAHAN DEKHIYE: Sab imports wapas aapke original './' wale style mein kar diye hain!
-import { client } from './lib/sanity.client'
-import { homeArticlesQuery } from './lib/queries'
-import { urlFor } from './lib/urlFor'
+// 🔴 YAHAN DEKHIYE: Aapki photo ke exact hisaab se raste set kar diye hain!
+import { client } from '../lib/sanity.client'
+import { homeArticlesQuery } from '../lib/queries'
+import { urlFor } from '../lib/urlFor'
 import Link from 'next/link'
 import AdBanner from './components/AdBanner'
 import SplashScreen from './components/SplashScreen'
@@ -14,10 +14,10 @@ export default async function Home() {
 
   return (
     <>
-      {/* Aapka Naya Animation Yahan Chalega */}
+      {/* Naya Animation yahan hai */}
       <SplashScreen />
 
-      {/* Aapki main website ka code */}
+      {/* Website ka main code */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen relative z-10">
         
         {/* MAIN LOGO HEADER */}
