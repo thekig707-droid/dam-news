@@ -1,6 +1,6 @@
 // Sanity se aapki saari news fetch karne ka jadui code
 export const homeArticlesQuery = `
-  *[_type == "post"] | order(publishedAt desc) {
+  *[_type == "article"] | order(publishedAt desc) {
     _id,
     title,
     slug,

@@ -1,6 +1,6 @@
 // 🔴 YAHAN DEKHIYE: Aapki photo ke exact hisaab se raste set kar diye hain!
 import { client } from '../lib/sanity.client'
-import { homeArticlesQuery } from '../lib/queries'
+import { homeArticlesQuery } from '../lib/article'
 import { urlFor } from '../lib/urlFor'
 import Link from 'next/link'
 import AdBanner from './components/AdBanner'
