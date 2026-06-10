@@ -1,6 +1,6 @@
-// 🔴 YAHAN DEKHIYE: Aapki photo ke exact hisaab se raste set kar diye hain!
+// 🔴 YAHAN DEKHIYE: Line 3 ko theek kar diya hai! 'article' ki jagah 'queries' lagaya hai.
 import { client } from '../lib/sanity.client'
-import { homeArticlesQuery } from '../lib/article'
+import { homeArticlesQuery } from '../lib/queries' // <-- YAHI WOH LINE HAI JO FIX HUI HAI
 import { urlFor } from '../lib/urlFor'
 import Link from 'next/link'
 import AdBanner from './components/AdBanner'
@@ -14,13 +14,10 @@ export default async function Home() {
 
   return (
     <>
-      {/* Naya Animation yahan hai */}
       <SplashScreen />
 
-      {/* Website ka main code */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white min-h-screen relative z-10">
         
-        {/* MAIN LOGO HEADER */}
         <header className="border-b-4 border-black pb-6 mb-8 text-center mt-4">
           <div className="flex justify-center items-baseline">
             <h1 className="text-7xl md:text-[8rem] font-black tracking-tighter text-black uppercase leading-none m-0">
@@ -39,10 +36,8 @@ export default async function Home() {
           </div>
         </header>
 
-        {/* LATEST NEWS SECTION */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Left Side: Latest Briefs */}
           <div className="md:col-span-1 border-r border-gray-200 pr-6 hidden md:block">
             <h2 className="text-xl font-bold font-sans border-b-2 border-red-700 pb-2 mb-4 uppercase tracking-wide">
               Latest Briefs
@@ -63,7 +58,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Right Side: Big Image News Cards */}
           <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
             {articles && articles.length > 0 ? (
               articles.map((article: any, index: number) => (
