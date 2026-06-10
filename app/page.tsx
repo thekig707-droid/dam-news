@@ -2,8 +2,8 @@ import { client } from '../lib/sanity.client'
 import { homeArticlesQuery } from '../lib/queries'
 import { urlFor } from '../lib/urlFor'
 import Link from 'next/link'
-import AdBanner from '../components/AdBanner'
-import SplashScreen from '../components/SplashScreen' // Naya Animation Import kiya
+import AdBanner from './components/AdBanner'
+import SplashScreen from './components/SplashScreen'
 import React from 'react' 
 
 export const revalidate = 60; 
@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <>
-      {/* 🔴 JADOO YAHAN HAI: Animation sabse upar layer par chalega aur phir gayab ho jayega */}
+      {/* JADOO YAHAN HAI: Animation sabse upar layer par chalega aur phir gayab ho jayega */}
       <SplashScreen />
 
       {/* Aapki main website ka code jo animation ke udne ke baad dikhega */}
